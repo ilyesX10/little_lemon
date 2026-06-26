@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Colors */
+  --primary: #495e57;
+  --secondary: #f4ce14;
+
+  --accent: #ee9972;
+  --accent-light: #fbdabb;
+
+  --surface: #edefee;
+  --text: #333333;
+
+  /* Typography */
+  --font-heading: "Markazi Text", serif;
+  --font-body: "Karla", sans-serif;
+
+  /* Font Sizes */
+  --text-display: 4rem;      /* 64px */
+  --text-subtitle: 2.5rem;   /* 40px */
+  --text-lead: 1.125rem;     /* 18px */
+  --text-card-title: 1.125rem; /* 18px */
+  --text-body: 1rem;         /* 16px */
+  --text-small: 0.875rem;    /* 14px */
+
+  /* Font Weights */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-bold: 700;
+
+  /* Border Radius */
+  --radius: 16px;
+}
+@theme {
+  --font-heading: "Markazi Text", serif;
+   --font-body: "Karla", sans-serif;
+}
+
+body {
+  background: white;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  font-weight: var(--weight-regular);
+}
