@@ -44,7 +44,6 @@ body {
   font-family: var(--font-body);
   font-size: var(--text-body);
   font-weight: var(--weight-regular);
-  transform:
 }
 @theme {
   --animate-progress: progress 0.6s ease-in-out forwards;
@@ -53,18 +52,18 @@ body {
   --breakpoint-xs: 480px;
   @keyframes progress {
     0% {
-      transform: scaleX(0);
+      width:0%
     }
     100% {
-      transform: scaleX(1);
+      width:100%
     }
   }
     @keyframes progressReverse {
     0% {
-      transform: scaleX(1);
+      width:100%
     }
     100% {
-      transform: scaleX(0);
+      width:0%
     }
   }
   @keyframes shineCircle {
@@ -73,6 +72,7 @@ body {
     }
     100% {
       background-color: var(--accent);
+      transform: scale(1.1)
     }
   }
 }
