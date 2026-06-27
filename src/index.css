@@ -44,4 +44,35 @@ body {
   font-family: var(--font-body);
   font-size: var(--text-body);
   font-weight: var(--weight-regular);
+  transform:
+}
+@theme {
+  --animate-progress: progress 0.6s ease-in-out forwards;
+  --animate-progressReverse: progressReverse 0.6s ease-in-out forwards;
+  --animate-shine: shineCircle 0.3s ease-out forwards;
+  --breakpoint-xs: 480px;
+  @keyframes progress {
+    0% {
+      transform: scaleX(0);
+    }
+    100% {
+      transform: scaleX(1);
+    }
+  }
+    @keyframes progressReverse {
+    0% {
+      transform: scaleX(1);
+    }
+    100% {
+      transform: scaleX(0);
+    }
+  }
+  @keyframes shineCircle {
+    0% {
+      background-color: var(--accent-light);
+    }
+    100% {
+      background-color: var(--accent);
+    }
+  }
 }
