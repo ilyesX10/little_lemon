@@ -1,4 +1,11 @@
+import {useState,useEffect} from 'react'
+
+
 function ConfirmationForm({children}) {
+    const [name,setName] = useState("")
+    const [email,setEmail] = useState("")
+    const [phone,setPhone] = useState(0)
+
   return (
     <form className="bg-white p-8 rounded-[var(--radius)] shadow-lg space-y-6 sm:max-w-xl max-w-sm mx-auto" aria-label="Confirmation Form">
       <div className="space-y-2">
@@ -6,6 +13,7 @@ function ConfirmationForm({children}) {
           Name <span className="text-red-500">*</span>
         </label>
         <input
+          onChange={(e)=>{setName(prev=>e.target.value)}}
           type="text"
           id="name"
           name="name"
@@ -17,6 +25,7 @@ function ConfirmationForm({children}) {
           Email <span className="text-red-500">*</span>
         </label>
         <input
+          onChange={(e)=>{setEmail(prev=>e.target.value)}}
           type="email"
           id="email"
           name="email"
@@ -28,6 +37,7 @@ function ConfirmationForm({children}) {
           Phone Number
         </label>
         <input
+          onChange={(e)=>{setPhone(prev=>e.target.value)}}
           type="tel"
           id="tel"
           name="tel"

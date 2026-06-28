@@ -1,5 +1,11 @@
+import {useState,useEffect} from 'react'
 
-function BookingForm({children}) {
+function BookingForm({children,availableTimes,updateTimes}) {
+  const [date,setDate] = useState(null)
+  const [time,setTime] = useState(null)
+  const [nbrGuess,setNbrGuess] = useState(0)
+  const [occasion,setOccasion] = useState("")
+
   return (
     <form className="bg-white p-8 rounded-[var(--radius)] shadow-lg space-y-6 sm:max-w-xl max-w-sm mx-auto" aria-label="Booking Form">
       <div className="space-y-2">
@@ -7,6 +13,9 @@ function BookingForm({children}) {
           Date <span className="text-red-500">*</span>
         </label>
         <input
+          onChange={(e)=>{setDate(prev=>e.target.value)
+          updateTimes({ type: 'dateChange', payload: e.target.value })
+          }}
           type="date"
           id="date"
           name="date"
@@ -18,15 +27,16 @@ function BookingForm({children}) {
           Time <span className="text-red-500">*</span>
         </label>
         <select
+          onChange={(e)=>{setTime(prev=>e.target.value)}}
           id="time"
           name="time"
           className="w-full p-3 border-2 border-[var(--surface)] rounded-[var(--radius)] focus:border-[var(--primary)] outline-none"
         >
           <option value="" selected>Select a time</option>
-          <option value="">17:00</option>
-          <option value="">18:00</option>
-          <option value="">19:00</option>
-          <option value="">20:00</option>
+          <option value="17:00">17:00</option>
+          <option value="18:00">18:00</option>
+          <option value="19:00">19:00</option>
+          <option value="20:00">20:00</option>
         </select>
       </div>
       <div className="space-y-2">
@@ -34,6 +44,7 @@ function BookingForm({children}) {
           Number of Guests <span className="text-red-500">*</span>
         </label>
         <input
+          onChange={(e)=>{setNbrGuess(prev=>e.target.value)}}
           type="number"
           id="guests"
           name="guests"
@@ -47,14 +58,15 @@ function BookingForm({children}) {
           Occasion
         </label>
         <select
+          onChange={(e)=>{setOccasion(prev=>e.target.value)}}
           id="occasion"
           name="occasion"
           className="w-full p-3 border-2 border-[var(--surface)] rounded-[var(--radius)] focus:border-[var(--primary)] outline-none"
         >
-          <option>Birthday</option>
-          <option>Anniversary</option>
-          <option>Engagement</option>
-          <option>Other</option>
+          <option value="Birthday">Birthday</option>
+          <option value="Anniversary">Anniversary</option>
+          <option value="Engagement">Engagement</option>
+          <option value="Other">Other</option>
         </select>
       </div>
       {children}
