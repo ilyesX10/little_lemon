@@ -1,11 +1,7 @@
 import {useState,useEffect} from 'react'
 
 
-function ConfirmationForm({children}) {
-    const [name,setName] = useState("")
-    const [email,setEmail] = useState("")
-    const [phone,setPhone] = useState(0)
-
+function ConfirmationForm({children,setName,setEmail,setPhone}) {
   return (
     <form className="bg-white p-8 rounded-[var(--radius)] shadow-lg space-y-6 sm:max-w-xl max-w-sm mx-auto" aria-label="Confirmation Form">
       <div className="space-y-2">

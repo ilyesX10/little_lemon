@@ -1,11 +1,16 @@
 import {useState,useEffect} from 'react'
 
-function BookingForm({children,availableTimes,updateTimes}) {
-  const [date,setDate] = useState(null)
-  const [time,setTime] = useState(null)
-  const [nbrGuess,setNbrGuess] = useState(0)
-  const [occasion,setOccasion] = useState("")
-
+function BookingForm({children,availableTimes,updateTimes,setDate,setTime,setDiners,setOccasion}) {
+async function getDates (date) {
+  return await fetchAPI(date);
+}
+const handleDateChange = async (e) => {
+  const selected = e.target.value;
+  setDate(selected);
+  const times = await getDates(new Date(selected));
+  console.log(times);
+  updateTimes({ type: 'dateChange', payload: times });
+}
   return (
     <form className="bg-white p-8 rounded-[var(--radius)] shadow-lg space-y-6 sm:max-w-xl max-w-sm mx-auto" aria-label="Booking Form">
       <div className="space-y-2">
@@ -13,9 +18,7 @@ function BookingForm({children,availableTimes,updateTimes}) {
           Date <span className="text-red-500">*</span>
         </label>
         <input
-          onChange={(e)=>{setDate(prev=>e.target.value)
-          updateTimes({ type: 'dateChange', payload: e.target.value })
-          }}
+          onChange={handleDateChange}
           type="date"
           id="date"
           name="date"
@@ -32,11 +35,13 @@ function BookingForm({children,availableTimes,updateTimes}) {
           name="time"
           className="w-full p-3 border-2 border-[var(--surface)] rounded-[var(--radius)] focus:border-[var(--primary)] outline-none"
         >
-          <option value="" selected>Select a time</option>
-          <option value="17:00">17:00</option>
-          <option value="18:00">18:00</option>
-          <option value="19:00">19:00</option>
-          <option value="20:00">20:00</option>
+          {availableTimes.map((e) => {
+            return (
+              <option key={e} value={e}>
+                {e}
+              </option>
+            );
+          })}
         </select>
       </div>
       <div className="space-y-2">
@@ -44,7 +49,7 @@ function BookingForm({children,availableTimes,updateTimes}) {
           Number of Guests <span className="text-red-500">*</span>
         </label>
         <input
-          onChange={(e)=>{setNbrGuess(prev=>e.target.value)}}
+          onChange={(e)=>{setDiners(prev=>e.target.value)}}
           type="number"
           id="guests"
           name="guests"
@@ -68,7 +73,7 @@ function BookingForm({children,availableTimes,updateTimes}) {
           <option value="Engagement">Engagement</option>
           <option value="Other">Other</option>
         </select>
-      </div>
+        </div>
       {children}
     </form>
   )
