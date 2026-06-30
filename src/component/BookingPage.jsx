@@ -44,10 +44,6 @@ function BookingPage() {
           setDiners={setNbrGuess}
           setOccasion={setOccasion}
           dispatch={dispatch}
-          date={date}
-          time={time}
-          diners={nbrGuess}
-          occasion={occasion}
           />
         ): step.state === 2? (
           <ConfirmationFrom
@@ -56,22 +52,6 @@ function BookingPage() {
             setPhone={setPhone}
             dispatch={dispatch}
           >
-            <button
-              type="button"
-              className="w-full bg-[var(--secondary)] text-[var(--text)] font-[var(--weight-bold)] text-[length:var(--text-lead)] py-3 px-6 rounded-[var(--radius)] hover:bg-[var(--primary)] hover:text-white transition-all duration-300 cursor-pointer"
-              aria-label="Submit Your Reservation"
-              onClick={()=>dispatch({type:"increment"})}
-            >
-              Submit Your Reservation
-            </button>
-            <button
-              type="button"
-              className="w-full bg-[var(--secondary)] text-[var(--text)] font-[var(--weight-bold)] text-[length:var(--text-lead)] py-3 px-6 rounded-[var(--radius)] hover:bg-[var(--primary)] hover:text-white transition-all duration-300 cursor-pointer"
-              aria-label="Previous"
-              onClick={()=>dispatch({type:"decrement"})}
-            >
-              Previous
-            </button>
           </ConfirmationFrom>
         ):(
           <Finish

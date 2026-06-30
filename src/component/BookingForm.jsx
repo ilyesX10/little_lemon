@@ -3,7 +3,18 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
-function BookingForm({children,availableTimes,updateTimes,date,time,diners,occasion,setDate,setTime,setDiners,setOccasion,dispatch}) {
+export const bookingFormSchema = Yup.object({
+  date: Yup.string().required('Date is required'),
+  time: Yup.string().required('Time is required'),
+  diners: Yup.number()
+    .transform((value, originalValue) => originalValue === '' ? undefined : value)
+    .min(1, 'At least 1 guest')
+    .max(10, 'Maximum 10 guests')
+    .required('Number of guests is required'),
+  occasion: Yup.string().required('Occasion is required'),
+});
+
+function BookingForm({children,availableTimes,updateTimes,setDate,setTime,setDiners,setOccasion,dispatch}) {
   async function getDates (date) {
     return await fetchAPI(date);
   }
@@ -13,31 +24,10 @@ function BookingForm({children,availableTimes,updateTimes,date,time,diners,occas
     const times = await getDates(new Date(selected));
     updateTimes({ type: 'dateChange', payload: times });
   }
-  const fields = Yup.object({
-    date: Yup.string().required('Date is required'),
-    time: Yup.string().required('Time is required'),
-    diners: Yup.number()
-      .transform((value, originalValue) => originalValue === '' ? undefined : value)
-      .min(1, 'At least 1 guest')
-      .max(10, 'Maximum 10 guests')
-      .required('Number of guests is required'),
-    occasion: Yup.string().required('Occasion is required'),
-  });
-  const { register, handleSubmit,watch, formState: { errors } } = useForm({
+  const fields = bookingFormSchema;
+  const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(fields)
   });
-    const watchedDiners = watch('diners');
-    console.log('watched diners:', watchedDiners);
-    console.log('errors:', errors);
-  async function submitForm (date,time,diners,occasion) {
-    const result = await submitAPI({
-                    date: date,
-                    time: time,
-                    diners: diners,
-                    occasion: occasion
-                  });
-    return result;
-  }
     const onSubmit = async (data) => {
       const result = await submitAPI(data);
       console.log('form data:', data);
@@ -52,12 +42,14 @@ function BookingForm({children,availableTimes,updateTimes,date,time,diners,occas
           Date <span className="text-red-500">*</span>
         </label>
         <input
-          onChange={handleDateChange}
-          {...register('date')}
           type="date"
           id="date"
-          name="date"
-          className="w-full p-3 border-2 border-[var(--surface)] rounded-[var(--radius)] focus:border-[var(--primary)] outline-none"
+          {...register('date', {
+            onChange: (e) => {
+              handleDateChange(e);
+            }
+          })}
+          className={`${errors.date ? "border-red-500":""} w-full p-3 border-2 border-[var(--surface)] rounded-[var(--radius)]`}
         />
         {errors.date && <p className="text-red-500 px-3">{errors.date.message}</p>}
       </div>
@@ -66,12 +58,12 @@ function BookingForm({children,availableTimes,updateTimes,date,time,diners,occas
           Time <span className="text-red-500">*</span>
         </label>
         <select
-          onChange={(e)=>{setTime(prev=>e.target.value)}}
-          {...register('time')}
           defaultValue=""
           id="time"
-          name="time"
-          className="w-full p-3 border-2 border-[var(--surface)] rounded-[var(--radius)] focus:border-[var(--primary)] outline-none"
+          {...register('time', {
+            onChange: (e) => setTime(e.target.value)
+          })}
+          className={`${errors.time ? "border-red-500":""} w-full p-3 border-2 border-[var(--surface)] rounded-[var(--radius)]`}
         >
           <option value="" disabled>
               choose the time
@@ -91,28 +83,28 @@ function BookingForm({children,availableTimes,updateTimes,date,time,diners,occas
           Number of Guests <span className="text-red-500">*</span>
         </label>
         <input
-          {...register('diners')}
-           onChange={(e)=>{setDiners(prev=>e.target.value)}}
           type="number"
           id="guests"
-          name="guests"
           min={1}
           max={10}
-          className="w-full p-3 border-2 border-[var(--surface)] rounded-[var(--radius)] focus:border-[var(--primary)] outline-none"
+          {...register('diners', {
+            onChange: (e) => setDiners(e.target.value)
+          })}
+          className={`${errors.diners ? "border-red-500":""} w-full p-3 border-2 border-[var(--surface)] rounded-[var(--radius)]`}
         />
+        {errors.diners && <p className="text-red-500 px-3">{errors.diners.message}</p>}
       </div>
-      {errors.diners && <p className="text-red-500 px-3">{errors.diners.message}</p>}
       <div className="space-y-2">
         <label htmlFor="occasion" className="block font-[var(--weight-bold)] text-[var(--text)]">
           Occasion
         </label>
         <select
-          onChange={(e)=>{setOccasion(prev=>e.target.value)}}
-          {...register('occasion')}
           defaultValue=""
           id="occasion"
-          name="occasion"
-          className="w-full p-3 border-2 border-[var(--surface)] rounded-[var(--radius)] focus:border-[var(--primary)] outline-none"
+          {...register('occasion', {
+            onChange: (e) => setOccasion(e.target.value)
+          })}
+          className={`${errors.occasion ? "border-red-500":""} w-full p-3 border-2 border-[var(--surface)] rounded-[var(--radius)]`}
         >
           <option value="" disabled>choose the occasion</option>
           <option value="Birthday">Birthday</option>

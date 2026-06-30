@@ -15,7 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/booking" element={<BookingPage />}></Route>
-        <Route path="*" element={<h1 className="text-2xl font-bold mt-30 text-center">Page Not Found</h1>}></Route>
+        <Route path="*" element={<h1 className="text-2xl font-bold mt-30 text-center">This page is not required in the assignment</h1>}></Route>
       </Routes>
     </Router>
     </>
