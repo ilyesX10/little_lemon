@@ -3,6 +3,7 @@ import BookingForm from './BookingForm'
 import Steps from './Steps'
 import ConfirmationFrom from './ConfirmationFrom'
 import Finish from './Finish'
+
 function reducer(step,action){
     switch(action.type){
       case 'increment': return {state: step.state + 1,prev: step.state};
@@ -10,27 +11,14 @@ function reducer(step,action){
     }
   }
 
-function updateTimes(currentTimes,action){
+export function updateTimes(currentTimes,action){
     switch(action.type){
       case 'dateChange': return {times : action.payload } ;
+      default: return {times : [...currentTimes.times]}
     }
 }
-async function submitForm (date,time,nbrGuess,occasion) {
-  const result = await submitAPI({
-                  date: date,
-                  time: time,
-                  diners: nbrGuess,
-                  occasion: occasion
-                });
-  console.log(
-    date,
-    time,
-    nbrGuess,
-    occasion,
-    result
-  )
-  return result;
-}
+
+
 function BookingPage() {
   const [date,setDate] = useState(null)
   const [time,setTime] = useState(null)
@@ -55,24 +43,18 @@ function BookingPage() {
           setTime={setTime}
           setDiners={setNbrGuess}
           setOccasion={setOccasion}
-          >
-          <button
-              type="button"
-              className="w-full bg-[var(--secondary)] text-[var(--text)] font-[var(--weight-bold)] text-[length:var(--text-lead)] py-3 px-6 rounded-[var(--radius)] hover:bg-[var(--primary)] hover:text-white transition-all duration-300 cursor-pointer"
-              aria-label="Make Your Reservation"
-              onClick={()=>{
-                submitForm(date,time,nbrGuess,occasion)
-                dispatch({type:"increment"})
-              }}
-            >
-              Make Your Reservation
-            </button>
-          </BookingForm>
+          dispatch={dispatch}
+          date={date}
+          time={time}
+          diners={nbrGuess}
+          occasion={occasion}
+          />
         ): step.state === 2? (
           <ConfirmationFrom
             setName={setName}
             setEmail={setEmail}
             setPhone={setPhone}
+            dispatch={dispatch}
           >
             <button
               type="button"
